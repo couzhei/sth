@@ -16,6 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+# from django.http import HttpResponse
+
+# # writing these functions here is so impractical and nonstandard!
+# def projects(request):
+#     return HttpResponse('Here are our products')
+
+# def project(request, pk):
+#     return HttpResponse(f'This is the project with id {pk}.')
+
+from django.urls import include
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('projects/', projects, name="projects"),
+    # path('project/<str:pk>/', project, name="project"),
+    path('', include('projects.urls')), # '' means that's gonna be our root domain
 ]
