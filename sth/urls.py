@@ -30,6 +30,6 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('projects/', projects, name="projects"),
-    # path('project/<str:pk>/', project, name="project"),
+    # path('project/<str:pk>/', project, name="project"), # cool to know, but not very practical though, see urls.py under projects directory
     path('', include('projects.urls')), # '' means that's gonna be our root domain
 ]
