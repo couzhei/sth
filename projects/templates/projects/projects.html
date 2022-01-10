@@ -23,7 +23,7 @@
     <ul>
       {% for project in projects %}
         <!-- This is not django way(why?)--><!-- <li>Title: <a href="/project/{{project.id}}">{{project.title}}</a> --- {{project.description}}</li> -->
-        <li>Title: <a href="{% url 'project' 'project.id' %}">{{project.title}}</a>a</li>     
+        <li>Title: <a href="{% url 'project' 'project.id' %}">{{project.title}}</a></li>     
       {% endfor %}
     </ul>
 

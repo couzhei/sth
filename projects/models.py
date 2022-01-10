@@ -66,7 +66,7 @@ class Tag(models.Model):
                           primary_key=True, editable=False)
 
     def __str__(self) -> str:
-        return self.name
+        return self.name.capitalize()
 
 # don't forget to use makemigrations (why?)
 # also don't forget to add them in admin.py (why?)
