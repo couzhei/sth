@@ -9,7 +9,7 @@
   <body>
     <!-- {% include 'navbar.html' %} --><!-- This looks into the same dir including anything using Jinja -->
 
-    <p>Hello you are on the {{page}} page.</p>
+    <!-- <p>Hello you are on the {{page}} page.</p>
 
     {% if number > 10 %}
     <p>Number is greater than 10</p>
@@ -17,17 +17,37 @@
     <p>Number is exactly 10</p>
     {% else %}
     <p>Number is equal to or less than 10</p>
-    {% endif %}
+    {% endif %} -->
 
     <h1>Projects</h1>
-    <ul>
-      {% for project in projects %}
-        <!-- This is not django way(why?)--><!-- <li>Title: <a href="/project/{{project.id}}">{{project.title}}</a> --- {{project.description}}</li> -->
-        <li>Title: <a href="{% url 'project' 'project.id' %}">{{project.title}}</a></li>     
-      {% endfor %}
-    </ul>
 
-    <p>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Project</th>
+        <th>Votes</th>
+        <th>Score</th>
+      </tr>
+      {% for project in projects %}
+        <tr>
+          <td>{{project.id}}</td>
+          <td>{{project.title}}</td>
+          <td>{{project.vote_total}}</td>
+          <td>{{project.vote_ratio}}%</td>
+          <td>{{project.created}}</td>
+          <td><a href="{% url 'project' project.id %}">View</a></td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <!-- <ul>
+      {% for project in projects %}  -->
+        <!-- This is not django way(why?)--><!-- <li>Title: <a href="/project/{{project.id}}">{{project.title}}</a> --- {{project.description}}</li> -->
+        <!-- <li>Title: <a href="{% url 'project' project.id %}">{{project.title}}</a></li>     
+      {% endfor %}
+    </ul> -->
+
+    <!-- <p>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
       1500s, when an unknown printer took a galley of type and scrambled it to
@@ -37,7 +57,7 @@
       sheets containing Lorem Ipsum passages, and more recently with desktop
       publishing software like Aldus PageMaker including versions of Lorem
       Ipsum.
-    </p>
+    </p> -->
   </body>
 </html>
 
