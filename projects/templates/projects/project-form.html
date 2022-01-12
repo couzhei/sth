@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+<!---->
+<!--so we want to make sure we have the nav bar-->
+{% block content %}
+
+<h1>Project Form</h1>
+
+<form method="POST">
+    <!--this means we are sending data, we're creating sth-->
+    <!--with every django form we need this, so this make sure that
+    our data isn't manipulated, that is safe and clean!-->
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit">
+</form>
+
+
+{% endblock %}

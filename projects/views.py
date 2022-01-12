@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 # render will look into the DIR key in TEMPLATES dictionary
 # in settings.py
 
@@ -7,23 +8,29 @@ from django.http import HttpResponse
 
 from projects.models import Project
 
-projectsList = [
-    {
-        'id': '1',
-        'title': 'E-Commerce Website',
-        'description': 'Fully functional ecommerce website'
-    },
-    {
-        'id': '2',
-        'title': 'Portfolio Website',
-        'description': 'This was a project where I built out my own portfolio'
-    },
-    {
-        'id': '3',
-        'title': 'Social Network',
-        'description': 'Awesome open source project I am still working on.'
-    }
-]
+# To use our form
+from .forms import ProjectForm
+from django.shortcuts import redirect
+
+# To make use of redirect
+
+# projectsList = [
+#     {
+#         'id': '1',
+#         'title': 'E-Commerce Website',
+#         'description': 'Fully functional ecommerce website'
+#     },
+#     {
+#         'id': '2',
+#         'title': 'Portfolio Website',
+#         'description': 'This was a project where I built out my own portfolio'
+#     },
+#     {
+#         'id': '3',
+#         'title': 'Social Network',
+#         'description': 'Awesome open source project I am still working on.'
+#     }
+# ]
 
 # writing these functions here is so impractical and nonstandard!
 
@@ -38,10 +45,12 @@ def projects(request):
     #     'projects':projectsList
     # }
     projects = Project.objects.all()
-    context = {'projects': projects}
-    return render(request, 'projects/projects.html',
-                  context,  # these are passed variables to jinja in html! REVOLUTIONARY!
-                  )
+    context = {"projects": projects}
+    return render(
+        request,
+        "projects/projects.html",
+        context,  # these are passed variables to jinja in html! REVOLUTIONARY!
+    )
 
 
 def project(request, pk):
@@ -58,5 +67,54 @@ def project(request, pk):
     # The following works the same as above but instead we're gonna
     # render the query right in the html page, check single-project.html
     projectObj = Project.objects.get(id=pk)
-    return render(request, 'projects/single-project.html',
-                  {'project': projectObj})
+    return render(request, "projects/single-project.html", {"project": projectObj})
+
+
+# after creating each view we need to create a url path in urls.py
+def createProject(request):
+    form = ProjectForm()
+
+    if request.method == "POST":
+        # # First let's check the terminal to see what the fuck this req is
+        # # actually doing! We can access values like request.POST['title']
+        # print(request.POST)
+        form = ProjectForm(request.POST)
+        if form.is_valid():  # this is a cool thing about modelforms, django
+            # will actually check that all the fields are required or correct
+            form.save()  # finally this statement makes the form a permenant
+            # element of our table
+            return redirect("projects")
+
+    context = {"form": form}
+    return render(request, "projects/project-form.html", context)
+
+
+def updateProject(request, pk):  # it's very similar to the above, with
+    # a few differences and one is that we need to pass an argument
+    # to indicate which data point we are going to change
+    project = Project.objects.get(id=pk)
+    form = ProjectForm(instance=project)
+
+    if request.method == "POST":
+
+        form = ProjectForm(request.POST, instance=project)
+
+        if form.is_valid():
+            form.save()
+            return redirect("projects")
+
+    context = {"form": form}
+    return render(request, "projects/project-form.html", context)
+
+
+# creating a function-based view :/
+def deleteProject(request, pk):
+    project = Project.objects.get(id=pk)
+    if request.method =='POST':
+        project.delete()
+        return redirect('projects')
+        """Do not forget that csrf tag
+            Forbidden (403)
+            CSRF verification failed. Request aborted."""
+    context = {'object': project}
+    return render(request, 'projects/delete_template.html', context)

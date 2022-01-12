@@ -84,8 +84,8 @@ item = Project.objects.first()
 # item.<relationship>.all()
 item.tags.all()
 
-# Select Related (to avoid n+1 query)
-posts = Review.objects.select_related('user', 'category').all()
+# # Select Related (to avoid n+1 query)
+# posts = Review.objects.select_related('user', 'category').all()
 
 # Read or render a 404 not found page
-project = get_object_or_404(Project, id=512)
+project = get_object_or_404(Project, title='Ecommerce')
