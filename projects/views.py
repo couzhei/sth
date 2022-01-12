@@ -78,7 +78,9 @@ def createProject(request):
         # # First let's check the terminal to see what the fuck this req is
         # # actually doing! We can access values like request.POST['title']
         # print(request.POST)
-        form = ProjectForm(request.POST)
+        # form = ProjectForm(request.POST)
+        form = ProjectForm(request.POST, request.FILES)  # we can now have access
+        # to the files sended by POST method
         if form.is_valid():  # this is a cool thing about modelforms, django
             # will actually check that all the fields are required or correct
             form.save()  # finally this statement makes the form a permenant
@@ -97,7 +99,9 @@ def updateProject(request, pk):  # it's very similar to the above, with
 
     if request.method == "POST":
 
-        form = ProjectForm(request.POST, instance=project)
+        # form = ProjectForm(request.POST, instance=project)
+
+        form = ProjectForm(request.POST, request.FILES, instance=project)
 
         if form.is_valid():
             form.save()

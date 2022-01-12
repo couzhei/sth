@@ -27,9 +27,34 @@ from django.urls import path
 
 from django.urls import include
 
+# we need to add in a few things in this file(roor's urls.py) here
+# so basically we just need to add a path to actually find those
+# images
+
+from django.conf import settings  # because we want to connect to our media root
+
+# and our media url(MEDIA_URL and MEDIA_ROOT)
+from django.conf.urls.static import static
+
+# static is basically going to help us create a new URL for our static
+# files
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     # path('projects/', projects, name="projects"),
     # path('project/<str:pk>/', project, name="project"), # cool to know, but not very practical though, see urls.py under projects directory
-    path('', include('projects.urls')), # '' means that's gonna be our root domain
+    path("", include("projects.urls")), # '' means that's gonna be our root domain
 ]
+
+# go ahead and set a new URL path
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# recall that MEDIA_ROOT is where we send the user uploaded content and
+# we just created a file path. So Django before did not know how to 
+# actually set that and we didn't have a url route for that. As you
+# can see we just created that, we used the static method, we went into 
+# settings, grab the URL and connected it to MEDIA_ROOT and that also
+# depends on the above urlpatterns as well (????)
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# django still doesn't know how to serve these up
+# we're gonna need a third party package called Django White Noise

@@ -21,66 +21,78 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$hu#sm812l6gkl8olh@ftx^+flax#g@w2q+928vzf^3nh*okth'
+SECRET_KEY = "django-insecure-$hu#sm812l6gkl8olh@ftx^+flax#g@w2q+928vzf^3nh*okth"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# After setting the above to False, allowed_hosts come into action!
+# Allowed_hosts informs us that these addresses are allowed to actually
+# connect to our website. In this mode django will look upon our staticfiles
+# instead of static folder. To actually make this work we need to go
+# to our URLs and just like for our MEDIA we need to make a path for 
+# our STATICFILES (see urls.py under root)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",  # 'www.mywebsite.com'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'projects.apps.ProjectsConfig',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "projects.apps.ProjectsConfig",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'sth.urls'
+ROOT_URLCONF = "sth.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [# edited here
-            os.path.join(BASE_DIR, 'templates'),
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [  # edited here
+            os.path.join(BASE_DIR, "templates"),
         ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'sth.wsgi.application'
+WSGI_APPLICATION = "sth.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -90,16 +102,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -107,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -121,9 +133,39 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+# the following was created due to the problem when we happened to
+# not see the featured_image of the projects in their single-project.html
+# after creating <img src="{{ project.featured_image.url }}"
+MEDIA_URL = "/images/"
+
+# the following is not a custom variable,
+# we actually need to call it this exactly, as docs says
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, 'static') # go ahead and find static folder
+    # in the newer versions of django you can do this
+    BASE_DIR
+    / "static"
+]
+
+# This is where our uploaded media are stored
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/images")
+STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC ROOT is kinda like media, where media defines where user
+# uploaded content is going to go, STATIC_ROOT is basically going to
+# define where our static files and production are going to be
+# also note that at this point, we do not have this file here now
+# or this folder. We could manually create it, but we don't need to do
+# it. There's a command called collectstatic that will run this for us.
+# What this command does actually is going to take all of these files
+# in here, all the folders and any other static files we have, and
+# it's going to bundle them up into one file and then Django can take care
+# of that from there. Basically it just duplicate our old static (see this)
+# If we were to modify our old static, let's say we worked on our website
+# little bit and we had a new static files, you would just run collectstatic
+# again before you deploy (debug mode to false)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -1,18 +1,51 @@
 {% extends 'main.html' %}
-<!---->
-<!--so we want to make sure we have the nav bar-->
+{%if true%}
+## <!---->
+## so we want to make sure we have the nav bar
+{%endif%}
 {% block content %}
 
 <h1>Project Form</h1>
 
-<form method="POST">
-    <!--this means we are sending data, we're creating sth-->
-    <!--with every django form we need this, so this make sure that
-    our data isn't manipulated, that is safe and clean!-->
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit">
-</form>
+{%if true%}
 
+## <form action="" method="POST" enctype="multipart/form-data">
+    
+    ## this means we are sending data, we're creating sth
+    ## with every django form we need this, so this make sure that
+    ## our data isn't manipulated, that is safe and clean!
+    ## Also note that without that enctype, we wouldn't be able
+    ## to send files from this form, I don't know exactly why.(?)
+    
+    ## {% csrf_token %}
+    ## {{form.as_p}}
+    ## <input type="submit">
+## </form>
+{%endif%}
+
+<!-- Main Section -->
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="#"><i class="im im-angle-left"></i></a>
+            <br>
+
+            <form class="form" method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{field.label}}: </label>
+                    {{field}}
+                </div>
+
+                {% endfor %}
+                
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
 
 {% endblock %}

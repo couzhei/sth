@@ -1,6 +1,40 @@
-<h1>Logo</h1>
+{% load static %}
+{%if true%}
+## old navbar
+## <img src="{% static 'images/logo.svg' %}">
+## <a href="{% url 'create-project' %}">Add Project</a>
+## <br>
+## <hr>
 
 
-<a href="{% url 'create-project' %}">Add Project</a>
-<br>
-<hr>
+## about {%load static%}, I thought that originally, if we add this into our main template
+## and if something's inheriting from it (extends from it), it would appear to
+## that as well, but we have to add this to every page if we want to use it #}
+
+
+## <!-- Header Section, new navbar -->
+{%endif%}
+<header class="header">
+    <div class="container container--narrow">
+        {%if true%}
+        ## Here we changed the default href='/' to some jinja
+        {%endif%}
+      <a href="{% url 'projects' %}" class="header__logo">
+        <img src="{% static 'images/logo.svg' %}" alt="DevSearch Logo" />
+      </a>
+      <nav class="header__nav">
+        <input type="checkbox" id="responsive-menu" />
+        <label for="responsive-menu" class="toggle-menu">
+          <span>Menu</span>
+          <div class="toggle-menu__lines"></div>
+        </label>
+        <ul class="header__menu">
+          <li class="header__menuItem"><a href="">Developers</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
+          <li class="header__menuItem"><a href="">Inbox</a></li>
+          <li class="header__menuItem"><a href="{% url 'create-project' %}">Add Project</a></li>
+          <li class="header__menuItem"><a href="" class="btn btn--sub">Login/Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
