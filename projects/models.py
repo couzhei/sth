@@ -8,8 +8,11 @@ import uuid
 """Did you know after creating this class you have to run `python manage.py 
 makemigrations`"""
 
+from users.models import Profile 
+
 
 class Project(models.Model):  # we inherit from django's model.Model class
+    owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL) # SET_NULL because we don't want to delete a profile just because of deleting a project
     title = models.CharField(max_length=200)  # a char field like VARCHAR
     # null to true means we can allow for empty string
     description = models.TextField(null=True, blank=True)

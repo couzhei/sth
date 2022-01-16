@@ -43,15 +43,16 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # path('projects/', projects, name="projects"),
     # path('project/<str:pk>/', project, name="project"), # cool to know, but not very practical though, see urls.py under projects directory
-    path("", include("projects.urls")), # '' means that's gonna be our root domain
+    path("projects/", include("projects.urls")),  # '' means that's gonna be our root domain
+    path("", include('users.urls')),
 ]
 
 # go ahead and set a new URL path
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # recall that MEDIA_ROOT is where we send the user uploaded content and
-# we just created a file path. So Django before did not know how to 
+# we just created a file path. So Django before did not know how to
 # actually set that and we didn't have a url route for that. As you
-# can see we just created that, we used the static method, we went into 
+# can see we just created that, we used the static method, we went into
 # settings, grab the URL and connected it to MEDIA_ROOT and that also
 # depends on the above urlpatterns as well (????)
 

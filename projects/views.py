@@ -67,7 +67,7 @@ def project(request, pk):
     # The following works the same as above but instead we're gonna
     # render the query right in the html page, check single-project.html
     projectObj = Project.objects.get(id=pk)
-    return render(request, "projects/single-project.html", {"project": projectObj})
+    return render(request, "projects/single-project.html", context={"project": projectObj})
 
 
 # after creating each view we need to create a url path in urls.py
