@@ -8,7 +8,7 @@ import uuid
 """Did you know after creating this class you have to run `python manage.py 
 makemigrations`"""
 
-from users.models import Profile 
+from users.models import Profile
 
 
 class Project(models.Model):  # we inherit from django's model.Model class
@@ -48,7 +48,7 @@ class Project(models.Model):  # we inherit from django's model.Model class
     vote_ratio = models.IntegerField(default=0, null=True, blank=True)
 
     def __repr__(self) -> str:
-        return self.title
+        return str(self.title)
 
     def __str__(
         self,
