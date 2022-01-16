@@ -70,7 +70,11 @@ def project(request, pk):
     return render(request, "projects/single-project.html", context={"project": projectObj})
 
 
+# because we have function-based views
+from django.contrib.auth.decorators import login_required
+
 # after creating each view we need to create a url path in urls.py
+@login_required(login_url='login')
 def createProject(request):
     form = ProjectForm()
 
@@ -91,6 +95,7 @@ def createProject(request):
     return render(request, "projects/project-form.html", context)
 
 
+@login_required(login_url='login')
 def updateProject(request, pk):  # it's very similar to the above, with
     # a few differences and one is that we need to pass an argument
     # to indicate which data point we are going to change
@@ -112,6 +117,7 @@ def updateProject(request, pk):  # it's very similar to the above, with
 
 
 # creating a function-based view :/
+@login_required(login_url='login')
 def deleteProject(request, pk):
     project = Project.objects.get(id=pk)
     if request.method =='POST':
